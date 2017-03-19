@@ -7,7 +7,7 @@
 # Optional
 # Default: false
 #
-# debug = true
+debug = true
 
 # Traefik logs file
 # If not defined, logs to stdout
@@ -20,7 +20,7 @@
 #
 # Optional
 #
-accessLogsFile = "log/access.log"
+# accessLogsFile = "log/access.log"
 
 # Entrypoints to be used by frontends that do not specify any entrypoint.
 # Each frontend can specify its own entrypoints.
@@ -28,6 +28,7 @@ accessLogsFile = "log/access.log"
 # Optional
 # Default: ["http"]
 #
+defaultEntryPoints = ["http"]
 # defaultEntryPoints = ["http", "https"]
 
 # Enable ACME (Let's Encrypt): automatic SSL
@@ -123,16 +124,10 @@ accessLogsFile = "log/access.log"
 
 # Entrypoints definition
 #
-# Optional
-# Default:
+# To redirect an http entrypoint to an https entrypoint (with SNI support):
 [entryPoints]
   [entryPoints.http]
   address = ":81"
-#
-# To redirect an http entrypoint to an https entrypoint (with SNI support):
-# [entryPoints]
-#   [entryPoints.http]
-#   address = ":80"
 #     [entryPoints.http.redirect]
 #       entryPoint = "https"
 #   [entryPoints.https]
@@ -163,7 +158,7 @@ accessLogsFile = "log/access.log"
 #
 # Optional
 #
-# [web]
+[web]
 
 # Web administration port
 #
@@ -250,7 +245,7 @@ endpoint = "unix:///var/run/docker.sock"
 #
 # Required
 #
-domain = "localhost"
+domain = "docker.localhost"
 
 # Enable watch docker changes
 #
