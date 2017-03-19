@@ -1,14 +1,14 @@
-version: '2'
+version: '3'
 
 services:
   proxy:
     image: traefik
-    # command: --web --docker --docker.domain=docker.localhost --entrypoints="Name:http Address::81" --defaultentrypoints="http" --logLevel=DEBUG
+    command: --web --web.address=":${ADMIN_PORT}" --entrypoints="Name:http Address::${HTTP_ENTRYPOINT_PORT}" --docker --docker.domain="${DOCKER_DOMAIN}" --logLevel=DEBUG
     networks:
       - default
     ports:
-      - "81:81"
-      - "8080:8080"
+      - "${HTTP_ENTRYPOINT_PORT}:${HTTP_ENTRYPOINT_PORT}"
+      - "${ADMIN_PORT}:${ADMIN_PORT}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.toml:/traefik.toml
