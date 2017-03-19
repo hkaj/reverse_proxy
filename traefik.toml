@@ -29,7 +29,7 @@ debug = true
 # Default: ["http"]
 #
 defaultEntryPoints = ["http"]
-# defaultEntryPoints = ["http", "https"]
+# TODO defaultEntryPoints = ["http", "https"]
 
 # Enable ACME (Let's Encrypt): automatic SSL
 #
@@ -41,7 +41,7 @@ defaultEntryPoints = ["http"]
 #
 # Required
 #
-# email = "foo@bar.com"
+# email = "foo@bar.com" # TODO: set that as a CLI argument
 
 # File or key used for certificates storage.
 # WARNING, if you use Traefik in Docker, you have 2 options:
@@ -125,9 +125,9 @@ defaultEntryPoints = ["http"]
 # Entrypoints definition
 #
 # To redirect an http entrypoint to an https entrypoint (with SNI support):
-[entryPoints]
-  [entryPoints.http]
-  address = ":81"
+# [entryPoints]
+#   [entryPoints.http]
+#   address = ":80"
 #     [entryPoints.http.redirect]
 #       entryPoint = "https"
 #   [entryPoints.https]
@@ -164,7 +164,6 @@ defaultEntryPoints = ["http"]
 #
 # Required
 #
-address = ":8080"
 
 # SSL certificate and key used
 #
@@ -190,6 +189,7 @@ address = ":8080"
 # To enable basic auth on the webui
 # with 2 user/pass: test:test and test2:test2
 # Passwords can be encoded in MD5, SHA1 and BCrypt: you can use htpasswd to generate those ones
+# TODO: template this as well (or to be put in a CLI argument)
 #   [web.auth.basic]
 #     users = ["test:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/", "test2:$apr1$d9hr9HBB$4HxwgUir3HP4EsggP/QNo0"]
 # To enable digest auth on the webui
@@ -245,7 +245,7 @@ endpoint = "unix:///var/run/docker.sock"
 #
 # Required
 #
-domain = "docker.localhost"
+# NDLR: To be set as a CLI argument
 
 # Enable watch docker changes
 #
