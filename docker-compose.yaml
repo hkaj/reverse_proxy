@@ -3,7 +3,7 @@ version: '2'
 services:
   proxy:
     image: traefik
-    command: --web --docker --docker.domain=docker.localhost --entrypoints="Name:http Address::81" --logLevel=DEBUG
+    command: --web --docker --docker.domain=docker.localhost --entrypoints="Name:http Address::81" --defaultentrypoints="http" --logLevel=DEBUG
     networks:
       - default
     ports:
