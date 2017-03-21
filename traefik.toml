@@ -7,7 +7,7 @@
 # Optional
 # Default: false
 #
-debug = true
+debug = false
 
 # Traefik logs file
 # If not defined, logs to stdout
@@ -28,20 +28,20 @@ debug = true
 # Optional
 # Default: ["http"]
 #
-defaultEntryPoints = ["http"]
+defaultEntryPoints = ["http", "https"]
 # TODO defaultEntryPoints = ["http", "https"]
 
 # Enable ACME (Let's Encrypt): automatic SSL
 #
 # Optional
 #
-# [acme]
+[acme]
 
 # Email address used for registration
 #
 # Required
 #
-# email = "foo@bar.com" # TODO: set that as a CLI argument
+email = "nick@tam.er" # Just set that as a CLI argument!
 
 # File or key used for certificates storage.
 # WARNING, if you use Traefik in Docker, you have 2 options:
@@ -54,14 +54,14 @@ defaultEntryPoints = ["http"]
 #
 # Required
 #
-# storage = "acme.json" # or "traefik/acme/account" if using KV store
+storage = "/etc/traefik/acme/acme.json" # or "traefik/acme/account" if using KV store
 
 # Entrypoint to proxy acme challenge/apply certificates to.
 # WARNING, must point to an entrypoint on port 443
 #
 # Required
 #
-# entryPoint = "https"
+entryPoint = "https"
 
 # Use a DNS based acme challenge rather than external HTTPS access, e.g. for a firewalled server
 # Select the provider that matches the DNS domain that will host the challenge TXT record,
@@ -86,7 +86,7 @@ defaultEntryPoints = ["http"]
 #
 # Optional
 #
-# acmeLogging = true
+acmeLogging = true
 
 
 # Enable certificate generation on frontends Host rules. This will request a certificate from Let's Encrypt for each frontend with a Host rule.
@@ -94,7 +94,7 @@ defaultEntryPoints = ["http"]
 #
 # Optional
 #
-# OnHostRule = true
+OnHostRule = true
 
 # CA server to use
 # Uncomment the line to run on the staging let's encrypt server
@@ -125,14 +125,14 @@ defaultEntryPoints = ["http"]
 # Entrypoints definition
 #
 # To redirect an http entrypoint to an https entrypoint (with SNI support):
-# [entryPoints]
-#   [entryPoints.http]
-#   address = ":80"
-#     [entryPoints.http.redirect]
-#       entryPoint = "https"
-#   [entryPoints.https]
-#   address = ":443"
-#     [entryPoints.https.tls]
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+      entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
 #     [acme]
 #     # caServer = "https://acme-staging.api.letsencrypt.org/directory"
 #     email = "letsencrypt@example.com"
@@ -258,7 +258,7 @@ watch = true
 # Optional
 # Default: true
 #
-# exposedbydefault = true
+exposedbydefault = false
 
 # Enable docker TLS connection
 #

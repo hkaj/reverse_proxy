@@ -3,15 +3,17 @@ version: '3'
 services:
   proxy:
     image: traefik
-    command: --web --web.address=":${ADMIN_PORT}" --entrypoints="Name:http Address::${HTTP_ENTRYPOINT_PORT}" --docker --docker.domain="${DOCKER_DOMAIN}" --logLevel=DEBUG
+    command: --web --web.address=":${ADMIN_PORT}" --docker --docker.domain="${DOCKER_DOMAIN}" --docker.usebindportip=true --docker.exposedbydefault=false --acme.email="${ACME_EMAIL}"
     networks:
-      - default
+    - default
     ports:
-      - "${HTTP_ENTRYPOINT_PORT}:${HTTP_ENTRYPOINT_PORT}"
-      - "${ADMIN_PORT}:${ADMIN_PORT}"
+    - "80:80" # Just for the HTTP -> HTTPs redirection
+    - "443:443"
+    - "${ADMIN_PORT}:${ADMIN_PORT}"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./traefik.toml:/traefik.toml
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    - ./traefik.toml:/traefik.toml:ro
+    - ./acme/:/etc/traefik/acme
 
 networks:
   default:
