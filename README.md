@@ -8,4 +8,10 @@ This configuration will automatically set up TLS for all your containers.
 Intended to be used with [media-server](https://github.com/hkaj/media-server/), but this setup should be generic enough for lots of use cases.
 
 # To run
-- ADMIN_PORT=... DOCKER_DOMAIN=... ACME_EMAIL=... docker-compose up -d
+Copy .env.tempalte to .env
+
+  `cp .env.tempalte .env`
+
+Start docker-compose
+
+  `docker-compose up -d`
