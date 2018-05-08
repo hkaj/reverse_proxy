@@ -1,20 +1,21 @@
-version: '3'
+version: '2'
 
 services:
   proxy:
-    image: traefik
-    command: --web.address=":${ADMIN_PORT}" --docker.domain="${DOCKER_DOMAIN}" --docker.usebindportip=true --acme.email="${ACME_EMAIL}"
+    image: traefik:latest
+    container_name: traefik
+    restart: always
+    command: --docker.domain="${DOCKER_DOMAIN}" --acme.email="${ACME_EMAIL}"
     networks:
-    - default
+    - web
     ports:
-    - "80:80" # for the HTTP -> HTTPS redirection
-    - "443:443"
-    - "${ADMIN_PORT}:${ADMIN_PORT}"
+    - 80:80
+    - 443:443
+    - 8080:8080
     volumes:
-    - /var/run/docker.sock:/var/run/docker.sock:ro
-    - ./traefik.toml:/etc/traefik/traefik.toml:ro
-    - ./acme/:/etc/traefik/acme
-
+    - /var/run/docker.sock:/var/run/docker.sock
+    - ./traefik.toml:/traefik.toml
+    - ./acme/acme.json:/acme.json
 networks:
-  default:
-    driver: bridge
+  web:
+    external: true

@@ -3,70 +3,47 @@
 ################################################################
 
 # Enable debug mode
-#
-# Optional
-# Default: false
-#
 # debug = true
 
 # Log level
-#
-# Optional
-# Default: "ERROR"
-#
 logLevel = "INFO"
+
+defaultEntryPoints = ["http", "https"]
+
+[api]
 
 [acme]
 email = "nick@tam.er" # Just set that as a CLI argument!
-storage = "/etc/traefik/acme/acme.json"
-entryPoint = "https"
+storage = "acme.json"
 acmeLogging = true
-OnHostRule = true
+OnHostRule=true
+entryPoint = "https"
+[acme.httpChallenge]
+entryPoint = "http"
 
-# Entrypoints to be used by frontends that do not specify any entrypoint.
-# Each frontend can specify its own entrypoints.
-#
-# Optional
-# Default: ["http"]
-#
-defaultEntryPoints = ["https"]
-
-# Entrypoints definition
-#
-# Optional
-# Default:
 [entryPoints]
+  [entryPoints.traefik]
+  address = ":8080"
+  [entryPoints.traefik.auth]
+     [entryPoints.traefik.auth.digest]
+       users = ["REPLACE_ME"]
   [entryPoints.http]
-    address = ":80"
+  address = ":80"
     [entryPoints.http.redirect]
-      entryPoint = "https"
+    entryPoint = "https"
   [entryPoints.https]
-     address = ":443"
-      [entryPoints.https.tls]
+  address = ":443"
+  [entryPoints.https.tls]
 
-################################################################
-# Web configuration backend
-################################################################
-
-# Enable web configuration backend
-[web]
-address = ":8080"
-  [web.metrics.prometheus]
-    Buckets=[0.1,0.3,1.2,5.0]
-  # To enable digest auth on the webui
-  # You can use htdigest to generate your user
-  [web.auth.digest]
-    users = [REPLACE_ME]
-################################################################
-# Docker configuration backend
-################################################################
+[retry]
 
 # Enable Docker configuration backend
 [docker]
+endpoint = "unix:///var/run/docker.sock"
+watch = true
+exposedByDefault = false
 
-# Expose containers by default in traefik
-#
-# Optional
-# Default: true
-#
-exposedbydefault = false
+[metrics]
+  [metrics.prometheus]
+    entryPoint = "traefik"
+
