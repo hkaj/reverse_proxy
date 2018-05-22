@@ -13,4 +13,4 @@ Intended to be used with [media-server](https://github.com/hkaj/media-server/), 
 - in this repo's folder, run: `mkdir acme && touch acme/acme.json && chmod 600 acme/acme.json  # create an acme.json file where letsencrypt certs will be stored`
 - `htdigest -c ht.digest traefik $USERNAME # you will be prompted for a new password`
 - fill the `auth.digest` section in traefik.toml with the result of `cat ht.digest`. Traefik *will not start* without this step
-- `ADMIN_PORT=... DOCKER_DOMAIN=... ACME_EMAIL=... docker-compose up -d`
+- `DOMAIN_NAME=... ACME_EMAIL=... docker-compose up -d`
