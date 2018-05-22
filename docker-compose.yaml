@@ -5,7 +5,7 @@ services:
     image: traefik:latest
     container_name: traefik
     restart: always
-    command: --docker.domain="${DOCKER_DOMAIN}" --acme.email="${ACME_EMAIL}"
+    command: --docker.domain="${DOMAIN_NAME}" --acme.email="${ACME_EMAIL}"
     networks:
     - web
     ports:
