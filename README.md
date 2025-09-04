@@ -17,5 +17,6 @@ By default we use the HTTP challenge for LetsEncrypt, however if your server IP 
 - `htdigest -c ht.digest traefik $USERNAME # you will be prompted for a new password`
 - fill the `digestAuth` label in docker-compose.yaml with the result of `cat ht.digest`. Traefik *will not start* without this step
 - configure an A record in your registrar to point `@` and `*` (the name and all its subdomains) to your server's IP
-- if your server's IP is routable over the internet, run `DOMAIN_NAME=... ACME_EMAIL=... docker compose up -d`
-- if not (e.g. using a VPN), comment the http challenge settings and uncomment the DNS ones + add the required env variables for your registrar. E.g. for Gandi, uncomment the `environment` section and run this command: `GANDI_API_KEY=... DOMAIN_NAME=... ACME_EMAIL=... docker compose up -d`
+- configure .env file: `cp .env.template .env` and set DOMAIN_NAME and ACME_EMAIL there
+- if your server's IP is not routable over the internet (e.g. using a VPN), comment the http challenge settings and uncomment the DNS ones + add the required env variables for your registrar. E.g. for Gandi, uncomment the `environment` section and add the relevant env var in `.env`
+- run `docker compose up -d`
