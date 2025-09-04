@@ -1,20 +1,35 @@
-version: '3'
-
 services:
-  proxy:
-    image: traefik
-    command: --web --web.address=":${ADMIN_PORT}" --docker --docker.domain="${DOCKER_DOMAIN}" --docker.usebindportip=true --docker.exposedbydefault=false --acme.email="${ACME_EMAIL}"
-    networks:
-    - default
+  traefik:
+    container_name: traefik
+    image: traefik:v3.5
+    command:
+      - "--certificatesresolvers.myresolver.acme.email=${ACME_EMAIL}"
+      - "--docker.domain=${DOMAIN_NAME}"
     ports:
-    - "80:80" # Just for the HTTP -> HTTPs redirection
-    - "443:443"
-    - "${ADMIN_PORT}:${ADMIN_PORT}"
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
     volumes:
-    - /var/run/docker.sock:/var/run/docker.sock:ro
-    - ./traefik.toml:/traefik.toml:ro
-    - ./acme/:/etc/traefik/acme
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yaml:/traefik.yaml
+      - ./letsencrypt:/letsencrypt
+    security_opt:
+      - no-new-privileges:true
+    # environment:
+    #   - "GANDIV5_PERSONAL_ACCESS_TOKEN=${GANDIV5_PERSONAL_ACCESS_TOKEN}"
+    labels:
+      - "traefik.enable=true"
+      # Dashboard router
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.tls.certresolver=myresolver"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.middlewares=auth"
+      - "traefik.http.middlewares.auth.digestAuth.users=REPLACE_ME"
+    networks:
+      - web
+    restart: unless-stopped
 
 networks:
-  default:
-    driver: bridge
+  web:
+    external: true

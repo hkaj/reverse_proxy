@@ -1,0 +1,47 @@
+################################################################
+# Global configuration
+################################################################
+
+log:
+  level: INFO
+
+accessLog: {}
+
+providers:
+  docker:
+    exposedByDefault: false
+    network: web
+    watch: true
+
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+
+  websecure:
+    address: ":443"
+    http:
+      tls:
+        certResolver: myresolver
+
+certificatesResolvers:
+  myresolver:
+    acme:
+      # uncomment for testing
+      # caserver: https://acme-staging-v02.api.letsencrypt.org/directory
+      storage: /letsencrypt/acme.json
+      # chose between http or dns challenge depending on your network setup
+      httpChallenge:
+        # used during the challenge
+        entryPoint: web
+      # dnsChallenge:
+      #   provider: "gandiv5"
+
+api:
+  dashboard: true
+  insecure: false
